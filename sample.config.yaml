@@ -1,0 +1,10 @@
+...
+notifications:
+  endpoints:
+    - name: cleanup
+      url: http://docker-registry-garbagecollector:5002/
+      ignore:
+        actions:
+          - pull
+          - push
+...
