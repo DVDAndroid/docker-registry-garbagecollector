@@ -6,6 +6,17 @@ services:
     volumes:
       - ./docker-registry/config.yml:/etc/docker/registry/config.yml
       - ./docker-registry/registry:/var/lib/registry
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --spider http://localhost:5000/v2/ || exit 1",
+        ]
+      start_period: 10s
+      start_interval: 1s
+      interval: 5m
+      timeout: 10s
+      retries: 3
 
   docker-registry-ui:
     image: joxit/docker-registry-ui:main
@@ -23,6 +34,9 @@ services:
       - TAGLIST_PAGE_SIZE=100
       - REGISTRY_SECURED=false
       - CATALOG_ELEMENTS_LIMIT=1000
+    depends_on:
+      docker-registry:
+        condition: service_healthy
 
   docker-registry-garbagecollector:
     image: docker-registry-garbagecollector:latest
@@ -34,3 +48,8 @@ services:
     environment:
       - CONTAINER_NAME=docker-registry
       - DOCKER_HOST=unix:///var/run/docker.sock
+    depends_on:
+      docker-registry:
+        condition: service_healthy
+      docker-registry-ui:
+        condition: service_started
