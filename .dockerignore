@@ -1,0 +1,17 @@
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+.idea
+*.iml
+docker-registry-garbagecollector*
+
+.git
+.gitignore
+README.md
+sample*

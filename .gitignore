@@ -2,3 +2,4 @@
 *.iml
 *.http
 docker-registry-garbagecollector
+*.exe
